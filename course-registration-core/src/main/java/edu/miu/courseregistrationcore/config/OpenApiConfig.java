@@ -11,7 +11,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class OpenApiConfig {
 
-
+    // Swagger UI configuration
+    // http://localhost:8080/swagger-ui/index.html
+    // http://localhost:8080/v3/api-docs
+    // http://localhost:8080/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
