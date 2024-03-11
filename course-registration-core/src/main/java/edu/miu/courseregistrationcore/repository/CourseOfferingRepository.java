@@ -19,8 +19,6 @@ public interface CourseOfferingRepository extends JpaRepository<CourseOffering, 
     @Query("SELECT co FROM CourseOffering co WHERE co.id = :id")
     CourseOffering getCourseOfferingById(Integer id);
 
-    @Query("SELECT co FROM CourseOffering co WHERE co.course.code = :code")
-    List<CourseOffering> getCourseOfferingByCourseCode(String code);
 
 
 }
