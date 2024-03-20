@@ -51,6 +51,7 @@ public class CourseRegistrationReminderJob {
         for (CourseOffering courseOffering : courseOfferings) {
             long hours = getHoursDuration(courseOffering.getId());
 
+            // send reminder 8 and 4 hours before the course offering starts
             if (hours == 8 || hours == 4) {
                 for (Student student : students) {
                     if (!registeredStudentIds.contains(student.getStudentID())) {
