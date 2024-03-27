@@ -48,8 +48,6 @@ public class SecurityConfiguration {
 
         return http.build();
     }
-    // CORS configuration
-    // http://localhost:8080/swagger-ui/index.html
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {

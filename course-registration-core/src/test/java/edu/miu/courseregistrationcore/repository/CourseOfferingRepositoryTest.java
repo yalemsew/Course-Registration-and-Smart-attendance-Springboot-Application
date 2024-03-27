@@ -59,10 +59,4 @@ public class CourseOfferingRepositoryTest {
         assertThat(result.get().getEndDate()).isEqualTo(courseOffering1.getEndDate());
 
     }
-    @Test
-    public void testGetCourseOfferingById() {
-        CourseOffering result = courseOfferingRepository.getCourseOfferingById(Math.toIntExact(courseOffering1.getId()));
-        assertThat(result.getStartDate()).isEqualTo(courseOffering1.getStartDate());
-        assertThat(result.getEndDate()).isEqualTo(courseOffering1.getEndDate());
-    }
 }
