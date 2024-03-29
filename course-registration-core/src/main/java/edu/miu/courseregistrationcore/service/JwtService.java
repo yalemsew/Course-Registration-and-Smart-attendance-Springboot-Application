@@ -42,17 +42,17 @@ public class JwtService {
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
+        addStudentIdToClaims(userDetails, claims);
+        return generateToken(claims, userDetails);
+    }
 
+    private void addStudentIdToClaims(UserDetails userDetails, Map<String, Object> claims) {
         if (userDetails instanceof Person person) {
             Roles currentRole = person.getRole().getName();
             if (Roles.STUDENT.equals(currentRole)) {
-                Student student = studentRepository.findById(person.getId()).orElse(null);
-                assert student != null;
-                claims.put("studentID", student.getStudentID());
+                studentRepository.findById(person.getId()).ifPresent(student -> claims.put("studentID", student.getStudentID()));
             }
         }
-
-        return generateToken(claims, userDetails);
     }
     // public String generateToken(UserDetails userDetails)
 
