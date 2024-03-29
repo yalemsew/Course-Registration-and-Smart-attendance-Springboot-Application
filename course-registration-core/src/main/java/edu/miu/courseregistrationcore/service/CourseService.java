@@ -65,20 +65,20 @@ public class CourseService implements ICourseService {
 
     public List<SessionWithAttendance> getSessionsWithAttendance(String studentId, Integer courseOfferingId) {
         CourseOffering courseOffering = getCourseOfferingById(courseOfferingId);
-
         Student student = studentRepository.findByStudentID(studentId)
                 .orElseThrow(() -> new StudentNotFoundException("Student not found with ID: " + studentId));
-
         List<Session> sessions = courseOffering.generateSessions();
-
-        List<AttendanceRecord> attendanceRecords = attendanceRecordRepository
-                .findByStudentIdAndScanDateTimeBetween(studentId, courseOffering.getStartDate().atStartOfDay(), courseOffering.getEndDate().atStartOfDay());
+        List<AttendanceRecord> attendanceRecords = findAttendanceRecords(studentId, courseOffering);
 
         return sessions.stream()
                 .map(session -> new SessionWithAttendance(session, attendanceRecords.stream()
                         .anyMatch(record -> record.getScanDateTime().toLocalDate().equals(session.getDate()))))
-                        .collect(Collectors.toList());
+                .collect(Collectors.toList());
+    }
 
+    private List<AttendanceRecord> findAttendanceRecords(String studentId, CourseOffering courseOffering) {
+        return attendanceRecordRepository.findByStudentIdAndScanDateTimeBetween(
+                studentId, courseOffering.getStartDate().atStartOfDay(), courseOffering.getEndDate().atStartOfDay());
     }
 
 
