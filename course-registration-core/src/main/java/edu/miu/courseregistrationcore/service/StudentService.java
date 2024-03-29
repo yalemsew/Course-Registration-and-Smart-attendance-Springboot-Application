@@ -5,7 +5,6 @@ import edu.miu.courseregistrationcore.domain.Student;
 import edu.miu.courseregistrationcore.repository.CourseRegistrationRepository;
 import edu.miu.courseregistrationcore.repository.StudentRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,14 +13,19 @@ import java.util.List;
 @Service
 @Transactional
 public class StudentService implements IStudentService {
-    @Autowired
-    StudentRepository studentRepository;
-    @Autowired
-    private CourseRegistrationRepository courseRegistrationRepository;
+
+    private final StudentRepository studentRepository;
+    private final CourseRegistrationRepository courseRegistrationRepository;
+
+    public StudentService(StudentRepository studentRepository, CourseRegistrationRepository courseRegistrationRepository) {
+        this.studentRepository = studentRepository;
+        this.courseRegistrationRepository = courseRegistrationRepository;
+    }
 
     @Override
     public Student getStudentByStudentID(String studentID) {
-        return studentRepository.findByStudentID(studentID).orElseThrow(() -> new EntityNotFoundException("Student with ID: " + studentID + " not found"));
+        return studentRepository.findByStudentID(studentID)
+                .orElseThrow(() -> new EntityNotFoundException("Student with ID: " + studentID + " not found"));
     }
 
     public List<Student> getAllStudents() {
@@ -42,11 +46,11 @@ public class StudentService implements IStudentService {
     }
 
     public Student updateStudentById(String id, Student updatedStudent) {
-        Student existingStudent = studentRepository.findByStudentID(id).orElseThrow(() -> new EntityNotFoundException("Student with ID: " + id + " not found"));
-        System.out.println(existingStudent.getStudentID());
+        Student existingStudent = studentRepository.findByStudentID(id)
+                .orElseThrow(() -> new EntityNotFoundException("Student with ID: " + id + " not found"));
+
         if (updatedStudent.getFirstName() != null) {
             existingStudent.setFirstName(updatedStudent.getFirstName());
-            System.out.println("==================Updated first name===========");
         }
         if (updatedStudent.getLastName() != null) {
             existingStudent.setLastName(updatedStudent.getLastName());
@@ -54,9 +58,7 @@ public class StudentService implements IStudentService {
         if (updatedStudent.getStudentID() != null) {
             existingStudent.setStudentID(updatedStudent.getStudentID());
         }
-        studentRepository.save(existingStudent);
-        return existingStudent;
+
+        return studentRepository.save(existingStudent);
     }
-
-
 }
