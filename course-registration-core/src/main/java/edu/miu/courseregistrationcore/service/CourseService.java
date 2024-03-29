@@ -74,12 +74,6 @@ public class CourseService implements ICourseService {
         List<AttendanceRecord> attendanceRecords = attendanceRecordRepository
                 .findByStudentIdAndScanDateTimeBetween(studentId, courseOffering.getStartDate().atStartOfDay(), courseOffering.getEndDate().atStartOfDay());
 
-//        return sessions.stream()
-//                .map(session -> new SessionWithAttendance(session, attendanceRecords.stream()
-//                        .filter(record -> record.getScanDateTime().equals(session.getDate()))
-//                        .collect(Collectors.toList())))
-//                .collect(Collectors.toList());
-//    }
         return sessions.stream()
                 .map(session -> new SessionWithAttendance(session, attendanceRecords.stream()
                         .anyMatch(record -> record.getScanDateTime().toLocalDate().equals(session.getDate()))))
