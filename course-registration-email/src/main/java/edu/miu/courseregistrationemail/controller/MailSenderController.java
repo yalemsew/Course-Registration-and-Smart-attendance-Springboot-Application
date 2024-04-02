@@ -24,6 +24,7 @@ public class MailSenderController {
     public void sendMail(@RequestBody MailEventDTO mailEventDTO) {
         CompletableFuture<SendResult<String, MailEventDTO>> future = mailEventKafkaTemplate.send("mail", mailEventDTO);
 
+
         future.whenComplete((result, ex) -> {
             if (ex == null) {
                 log.info("Sent message=[" + mailEventDTO +
